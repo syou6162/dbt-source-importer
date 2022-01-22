@@ -1,0 +1,25 @@
+---
+version: 2
+
+sources:
+  - name: {{ .Dataset }}
+    database: {{ .Project }}
+    tables:
+      # dbt source ID: source("{{ .Dataset }}", "{{ .Project | replace "-" "_" }}__{{ .Dataset }}__{{ .Table }}")
+      - name: {{ .Project | replace "-" "_" }}__{{ .Dataset }}__{{ .Table }}
+        identifier: {{ .Dataset }}
+
+        loaded_at_field: CreatedAt
+        freshness:
+          warn_after:
+            count: 24
+            period: hour  # minute | hour | day
+          error_after:
+            count: 36
+            period: hour  # minute | hour | day
+
+        columns:
+          {{- range $_, $column := .Columns }}
+          - name: {{ $column.Name }}
+            description: {{ $column.Description }}
+          {{- end }}
