@@ -143,4 +143,12 @@ func main() {
 	if err = t.Execute(outFile, dbtSource); err != nil {
 		log.Fatal(err)
 	}
+
+	fmt.Println(fmt.Sprintf(
+		"File %s is generated under for %s.%s.%s",
+		filepath.Dir((outFile.Name())),
+		*project,
+		*dataset,
+		*table,
+	))
 }
