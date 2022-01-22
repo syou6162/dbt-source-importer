@@ -1,5 +1,6 @@
 ## dbt-source-importer
 [![CI](https://github.com/syou6162/dbt-source-importer/actions/workflows/ci.yaml/badge.svg)](https://github.com/syou6162/dbt-source-importer/actions/workflows/ci.yaml)
+[![version](https://img.shields.io/github/v/release/syou6162/dbt-source-importer)](https://github.com/syou6162/dbt-source-importer/releases)
 
 dbt-source-importer is a command line tool to import dbt sources. You can easily generate source yaml files from metadata of data warehouse like BigQuery.
 
