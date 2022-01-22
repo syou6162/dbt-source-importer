@@ -10,8 +10,7 @@ import (
 )
 
 func TestRenderDefaultTemplate(t *testing.T) {
-	expect := `
----
+	expect := `---
 version: 2
 
 sources:

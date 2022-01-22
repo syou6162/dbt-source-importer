@@ -13,8 +13,7 @@ import (
 	"github.com/Masterminds/sprig"
 )
 
-const templateSourceContent = `
----
+const templateSourceContent = `---
 version: 2
 
 sources:
@@ -45,8 +44,7 @@ sources:
           {{- range $_, $column := .Columns }}
           - name: {{ $column.Name }}
             description: {{ $column.Description }}
-          {{- end }}
-`
+          {{- end }}`
 
 type Column struct {
 	Name        string
