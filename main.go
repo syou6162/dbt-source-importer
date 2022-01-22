@@ -3,10 +3,12 @@ package main
 import (
 	"context"
 	"flag"
+	"fmt"
 	"io"
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 	"text/template"
 
 	"cloud.google.com/go/bigquery"
@@ -123,7 +125,22 @@ func main() {
 		log.Fatal(err)
 	}
 
-	if err = t.Execute(os.Stdout, dbtSource); err != nil {
+	outFilename := fmt.Sprintf(
+		"models/%s/%s/%s/src_%s__%s__%s.yml",
+		strings.ReplaceAll(*project, "-", "_"),
+		*dataset,
+		*table,
+		strings.ReplaceAll(*project, "-", "_"),
+		*dataset,
+		*table,
+	)
+	outFile, err := os.Create(outFilename)
+	defer outFile.Close()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if err = t.Execute(outFile, dbtSource); err != nil {
 		log.Fatal(err)
 	}
 }
