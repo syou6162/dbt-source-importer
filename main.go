@@ -112,7 +112,10 @@ func main() {
 	}
 	defer client.Close()
 
-	meta, _ := client.Dataset(*dataset).Table(*table).Metadata(ctx)
+	meta, err := client.Dataset(*dataset).Table(*table).Metadata(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
 	dbtSource := makeDbtSource(*project, *dataset, *table, meta)
 
 	t, err := makeTemplate(*templateFilePath)
