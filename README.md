@@ -3,6 +3,12 @@
 
 dbt-source-importer is a command line tool to import dbt sources. You can easily generate source yaml files from metadata of data warehouse like BigQuery.
 
+## Install
+
+```
+go get github.com/syou6162/dbt-source-importer
+```
+
 ## Usage
 You can import dbt sources by specifying project, dataset, and table.
 
