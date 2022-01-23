@@ -125,11 +125,21 @@ func main() {
 		log.Fatal(err)
 	}
 
-	outFilename := fmt.Sprintf(
-		"models/%s/%s/%s/src_%s__%s__%s.yml",
+	dir := fmt.Sprintf(
+		"models/%s/%s/%s",
 		strings.ReplaceAll(*project, "-", "_"),
 		*dataset,
 		*table,
+	)
+
+	err = os.MkdirAll(dir, os.ModePerm)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	outFilename := fmt.Sprintf(
+		"%s/src_%s__%s__%s.yml",
+		dir,
 		strings.ReplaceAll(*project, "-", "_"),
 		*dataset,
 		*table,
