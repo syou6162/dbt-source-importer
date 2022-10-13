@@ -3,7 +3,7 @@ module github.com/syou6162/dbt-source-importer
 go 1.19
 
 require (
-	cloud.google.com/go/bigquery v1.41.0
+	cloud.google.com/go/bigquery v1.42.0
 	github.com/Masterminds/sprig v2.22.0+incompatible
 )
 
@@ -33,7 +33,7 @@ require (
 	golang.org/x/xerrors v0.0.0-20220609144429-65e65417b02f // indirect
 	google.golang.org/api v0.95.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
-	google.golang.org/genproto v0.0.0-20220913154956-18f8339a66a5 // indirect
+	google.golang.org/genproto v0.0.0-20220914142337-ca0e39ece12f // indirect
 	google.golang.org/grpc v1.48.0 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 )
