@@ -4,7 +4,6 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"io"
 	"log"
 	"os"
 	"path/filepath"
@@ -70,13 +69,6 @@ func extractColumns(schema bigquery.Schema) []Column {
 		columns = append(columns, Column{s.Name, s.Description, string(s.Type)})
 	}
 	return columns
-}
-
-func renderDbtSourceTemplate(t *template.Template, wr io.Writer, source DbtSource) error {
-	if err := t.Execute(wr, source); err != nil {
-		return err
-	}
-	return nil
 }
 
 func makeTemplate(templateFilePath string) (*template.Template, error) {
