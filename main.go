@@ -99,7 +99,7 @@ func main() {
 		project          = flag.String("project", "", "GCP project")
 		dataset          = flag.String("dataset", "", "Dataset for source table")
 		table            = flag.String("table", "", "Source table")
-		templateFilePath = flag.String("template", "", "string flag")
+		templateFilePath = flag.String("template", "", "Template file path")
 		outDir           = flag.String("outdir", "models/{{.ProjectForPath}}/{{.Dataset}}/{{.Table}}", "Output directory")
 		outFile          = flag.String("outfile", "src_{{.ProjectForPath}}__{{.Dataset}}__{{.Table}}.yml", "Output file name")
 	)
