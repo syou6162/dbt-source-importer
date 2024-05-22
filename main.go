@@ -56,11 +56,12 @@ type Column struct {
 }
 
 type DbtSource struct {
-	Project     string
-	Dataset     string
-	Table       string
-	Description string
-	Columns     []Column
+	Project        string
+	ProjectForPath string
+	Dataset        string
+	Table          string
+	Description    string
+	Columns        []Column
 }
 
 func extractColumns(schema bigquery.Schema) []Column {
@@ -92,11 +93,12 @@ func makeTemplate(templateFilePath string) (*template.Template, error) {
 
 func makeDbtSource(project string, dataset string, table string, meta *bigquery.TableMetadata) DbtSource {
 	return DbtSource{
-		Project:     project,
-		Dataset:     dataset,
-		Table:       table,
-		Description: meta.Description,
-		Columns:     extractColumns(meta.Schema),
+		Project:        project,
+		ProjectForPath: strings.ReplaceAll(project, "-", "_"),
+		Dataset:        dataset,
+		Table:          table,
+		Description:    meta.Description,
+		Columns:        extractColumns(meta.Schema),
 	}
 }
 
@@ -106,6 +108,8 @@ func main() {
 		dataset          = flag.String("dataset", "", "Dataset for source table")
 		table            = flag.String("table", "", "Source table")
 		templateFilePath = flag.String("template", "", "string flag")
+		outDir           = flag.String("outdir", "models/{{.ProjectForPath}}/{{.Dataset}}/{{.Table}}", "Output directory")
+		outFile          = flag.String("outfile", "src_{{.ProjectForPath}}__{{.Dataset}}__{{.Table}}.yml", "Output file name")
 	)
 	flag.Parse()
 
@@ -127,38 +131,45 @@ func main() {
 		log.Fatal(err)
 	}
 
-	dir := fmt.Sprintf(
-		"models/%s/%s/%s",
-		strings.ReplaceAll(*project, "-", "_"),
-		*dataset,
-		*table,
-	)
+	dirTpl, err := template.New("dirName").Parse(*outDir)
+	if err != nil {
+		log.Fatal(err)
+	}
+	builder := strings.Builder{}
+	if err = dirTpl.Execute(&builder, dbtSource); err != nil {
+		log.Fatal(err)
+	}
 
+	dir := builder.String()
 	err = os.MkdirAll(dir, os.ModePerm)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	outFilename := fmt.Sprintf(
-		"%s/src_%s__%s__%s.yml",
-		dir,
-		strings.ReplaceAll(*project, "-", "_"),
-		*dataset,
-		*table,
-	)
-	outFile, err := os.Create(outFilename)
-	defer outFile.Close()
+	outFileTpl, err := template.New("outFileName").Parse(*outFile)
+	if err != nil {
+		log.Fatal(err)
+	}
+	builder.Reset()
+	if err = outFileTpl.Execute(&builder, dbtSource); err != nil {
+		log.Fatal(err)
+	}
+	outFilename := builder.String()
+	outFilePath := filepath.Join(dir, outFilename)
+
+	f, err := os.Create(outFilePath)
+	defer f.Close()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	if err = t.Execute(outFile, dbtSource); err != nil {
+	if err = t.Execute(f, dbtSource); err != nil {
 		log.Fatal(err)
 	}
 
 	fmt.Println(fmt.Sprintf(
 		"File %s is generated under for %s.%s.%s",
-		filepath.Dir((outFile.Name())),
+		outFilePath,
 		*project,
 		*dataset,
 		*table,
