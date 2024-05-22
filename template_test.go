@@ -1,7 +1,6 @@
 package main
 
 import (
-	"io/ioutil"
 	"log"
 	"os"
 	"testing"
@@ -79,12 +78,12 @@ description`,
 	}
 	source := makeDbtSource("my-project", "my_dataset", "my_table", meta)
 
-	tmpFile, _ := ioutil.TempFile("", "tmptest")
+	tmpFile, _ := os.CreateTemp("", "tmptest")
 	defer os.Remove(tmpFile.Name())
 
 	temp.Execute(tmpFile, source)
 
-	content, err := ioutil.ReadFile(tmpFile.Name())
+	content, err := os.ReadFile(tmpFile.Name())
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -158,12 +157,12 @@ description`,
 	}
 	source := makeDbtSource("my-project", "my_dataset", "my_table", meta)
 
-	tmpFile, _ := ioutil.TempFile("", "tmptest")
+	tmpFile, _ := os.CreateTemp("", "tmptest")
 	defer os.Remove(tmpFile.Name())
 
 	temp.Execute(tmpFile, source)
 
-	content, err := ioutil.ReadFile(tmpFile.Name())
+	content, err := os.ReadFile(tmpFile.Name())
 	if err != nil {
 		log.Fatal(err)
 	}
