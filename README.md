@@ -23,3 +23,10 @@ You can also use your custom template.
 ```
 ./dbt-source-importer --project my-project --dataset my_dataset --table my_table --template templates/source.tmpl.yml
 ```
+
+You can modify output directories and file names, using source metadata.
+
+```
+# ProjectForPath means your Project ID with hyphens(-) replaced by underscores(_).
+./dbt-source-importer --project my-project --dataset my_dataset --table my_table --outdir models/{{.ProjectForPath}}/your_directory --outfile {{.Dataset}}__{{.Table}}.yml
+```
