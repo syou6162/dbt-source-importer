@@ -46,11 +46,13 @@ sources:
           {{- range $_, $column := .Columns }}
           - name: {{ $column.Name }}
             description: {{ $column.Description }}
+            data_type: {{ $column.Type }}
           {{- end }}`
 
 type Column struct {
 	Name        string
 	Description string
+	Type        string
 }
 
 type DbtSource struct {
@@ -64,7 +66,7 @@ type DbtSource struct {
 func extractColumns(schema bigquery.Schema) []Column {
 	var columns []Column
 	for _, s := range schema {
-		columns = append(columns, Column{s.Name, s.Description})
+		columns = append(columns, Column{s.Name, s.Description, string(s.Type)})
 	}
 	return columns
 }
