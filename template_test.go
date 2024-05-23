@@ -1,7 +1,6 @@
 package main
 
 import (
-	"io/ioutil"
 	"log"
 	"os"
 	"testing"
@@ -43,10 +42,13 @@ sources:
         columns:
           - name: col1
             description: col1 description
+            data_type: STRING
           - name: col2
             description: col2 description
+            data_type: INTEGER
           - name: col3
-            description: col3 description`
+            description: col3 description
+            data_type: FLOAT`
 
 	temp, _ := makeTemplate("")
 	meta := &bigquery.TableMetadata{
@@ -60,25 +62,28 @@ description`,
 			&bigquery.FieldSchema{
 				Name:        "col1",
 				Description: "col1 description",
+				Type: bigquery.StringFieldType,
 			},
 			&bigquery.FieldSchema{
 				Name:        "col2",
 				Description: "col2 description",
+				Type: bigquery.IntegerFieldType,
 			},
 			&bigquery.FieldSchema{
 				Name:        "col3",
 				Description: "col3 description",
+				Type: bigquery.FloatFieldType,
 			},
 		},
 	}
 	source := makeDbtSource("my-project", "my_dataset", "my_table", meta)
 
-	tmpFile, _ := ioutil.TempFile("", "tmptest")
+	tmpFile, _ := os.CreateTemp("", "tmptest")
 	defer os.Remove(tmpFile.Name())
 
 	temp.Execute(tmpFile, source)
 
-	content, err := ioutil.ReadFile(tmpFile.Name())
+	content, err := os.ReadFile(tmpFile.Name())
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -115,10 +120,13 @@ sources:
         columns:
           - name: col1
             description: col1 description
+            data_type: BOOLEAN
           - name: col2
             description: col2 description
+            data_type: BIGNUMERIC
           - name: col3
             description: col3 description
+            data_type: RECORD
 `
 
 	temp, _ := makeTemplate("templates/sample.tmpl.yml")
@@ -133,25 +141,28 @@ description`,
 			&bigquery.FieldSchema{
 				Name:        "col1",
 				Description: "col1 description",
+				Type: bigquery.BooleanFieldType,
 			},
 			&bigquery.FieldSchema{
 				Name:        "col2",
 				Description: "col2 description",
+				Type: bigquery.BigNumericFieldType,
 			},
 			&bigquery.FieldSchema{
 				Name:        "col3",
 				Description: "col3 description",
+				Type: bigquery.RecordFieldType,
 			},
 		},
 	}
 	source := makeDbtSource("my-project", "my_dataset", "my_table", meta)
 
-	tmpFile, _ := ioutil.TempFile("", "tmptest")
+	tmpFile, _ := os.CreateTemp("", "tmptest")
 	defer os.Remove(tmpFile.Name())
 
 	temp.Execute(tmpFile, source)
 
-	content, err := ioutil.ReadFile(tmpFile.Name())
+	content, err := os.ReadFile(tmpFile.Name())
 	if err != nil {
 		log.Fatal(err)
 	}
