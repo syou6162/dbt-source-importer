@@ -22,4 +22,5 @@ sources:
           {{- range $_, $column := .Columns }}
           - name: {{ $column.Name }}
             description: {{ $column.Description }}
+            data_type: {{ $column.Type }}
           {{- end }}
