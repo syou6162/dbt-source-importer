@@ -5,7 +5,7 @@ go 1.21
 toolchain go1.23.5
 
 require (
-	cloud.google.com/go/bigquery v1.65.0
+	cloud.google.com/go/bigquery v1.66.0
 	github.com/Masterminds/sprig v2.22.0+incompatible
 )
 
