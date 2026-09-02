@@ -2,7 +2,7 @@ module github.com/syou6162/dbt-source-importer
 
 go 1.23.0
 
-toolchain go1.25.1
+toolchain go1.27.1
 
 require (
 	cloud.google.com/go/bigquery v1.70.0
